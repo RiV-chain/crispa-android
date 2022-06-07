@@ -5,6 +5,10 @@ def acraSecretsPropertiesFile = rootProject.file("acra.properties")
 def acraSecretsProperties = new Properties()
 acraSecretsProperties.load(new FileInputStream(acraSecretsPropertiesFile))
 
+def keystorePropertiesFile = rootProject.file("keystore.properties")
+def keystoreProperties = new Properties()
+keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+
 android {
     compileSdkVersion 32
     defaultConfig {
@@ -24,10 +28,10 @@ android {
     }
 	signingConfigs {
 	  release {
-		storeFile file(KEYSTORE_FILE_PATH)
-		storePassword System.getenv("KEYSTORE_PASSWORD")
-		keyAlias System.getenv("KEY_ALIAS")
-		keyPassword System.getenv("KEY_PASSWORD")
+		storeFile file(keystoreProperties['KEYSTORE_FILE_PATH'])
+		storePassword keystoreProperties['KEYSTORE_PASSWORD']
+		keyAlias keystoreProperties['KEY_ALIAS']
+		keyPassword keystoreProperties['KEY_PASSWORD']
 	  }
 	}
     buildTypes {
