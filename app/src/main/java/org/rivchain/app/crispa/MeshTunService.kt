@@ -287,7 +287,7 @@ class MeshTunService : VpnService() {
             intent.putExtra(IS_VPN_SERVICE_STOPPED, isClosed);
             var stackBuilder = TaskStackBuilder.create(this)
             stackBuilder.addNextIntentWithParentStack(intent)
-            var pi = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT)
+            var pi = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT)
             val b = NotificationCompat.Builder(this, channelId)
             b.setOngoing(true)
                 .setContentIntent(pi)
