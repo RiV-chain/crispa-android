@@ -1,10 +1,4 @@
-GOPATH=$(shell go env GOPATH)
-export GO111MODULE=off
 all:
-	-go get -u github.com/RiV-chain/RiV-mesh;
-	-cd $(GOPATH)/src/github.com/RiV-chain/RiV-mesh; \
-		go get -v -d ./...; \
-		go get -u github.com/RiV-chain/RiV-mesh-extras; \
-		ANDROID=true ./build;
-	mv -f $(GOPATH)/src/github.com/RiV-chain/RiV-mesh/mesh.aar mesh.aar;
-	mv -f $(GOPATH)/src/github.com/RiV-chain/RiV-mesh/mesh-sources.jar mesh-sources.jar;
+	cd yggdrasil-go && ANDROID=true contrib/mobile/build
+	mv -f yggdrasil-go/yggdrasil.aar yggdrasil.aar;
+	mv -f yggdrasil-go/yggdrasil-sources.jar yggdrasil-sources.jar;
