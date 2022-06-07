@@ -1,4 +1,4 @@
 all:
-	cd yggdrasil-go && ANDROID=true contrib/mobile/build
-	mv -f yggdrasil-go/yggdrasil.aar yggdrasil.aar;
-	mv -f yggdrasil-go/yggdrasil-sources.jar yggdrasil-sources.jar;
+	cd RiV-mesh && ANDROID=true contrib/mobile/build
+	mv -f RiV-mesh/mesh.aar mesh.aar;
+	mv -f RiV-mesh/mesh-sources.jar mesh-sources.jar;
