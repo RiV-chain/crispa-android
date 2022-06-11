@@ -9,6 +9,7 @@ import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.hbb20.CountryCodePicker
 import org.mesh.app.crispa.models.DNSInfo
 import org.mesh.app.crispa.models.config.SelectDNSInfoListAdapter
 import org.mesh.app.crispa.models.config.Utils.Companion.deserializeStringList2DNSInfoSet
@@ -16,6 +17,9 @@ import org.mesh.app.crispa.models.config.Utils.Companion.ping
 import org.mesh.app.crispa.models.config.Utils.Companion.serializeDNSInfoSet2StringList
 import kotlinx.coroutines.*
 import java.net.InetAddress
+import java.net.UnknownHostException
+import java.util.*
+import kotlin.collections.ArrayList
 import kotlin.concurrent.thread
 
 class DNSListActivity : AppCompatActivity() {
@@ -33,11 +37,11 @@ class DNSListActivity : AppCompatActivity() {
         findViewById<FloatingActionButton>(R.id.fab).setOnClickListener { _ ->
             addNewDNS()
         }
-        var extras = intent.extras
-        var dnsList = findViewById<ListView>(R.id.dnsList)
-        var adapter = SelectDNSInfoListAdapter(this, arrayListOf(), mutableSetOf())
+        val extras = intent.extras
+        val dnsList = findViewById<ListView>(R.id.dnsList)
+        val adapter = SelectDNSInfoListAdapter(this, arrayListOf(), mutableSetOf())
         dnsList.adapter = adapter
-        var cd = deserializeStringList2DNSInfoSet(
+        val cd = deserializeStringList2DNSInfoSet(
             extras!!.getStringArrayList(MainActivity.DNS_LIST)!!
         )
         thread(start = true) {
@@ -64,7 +68,7 @@ class DNSListActivity : AppCompatActivity() {
             runOnUiThread(
                 Runnable
                 {
-                    var currentDNS = ArrayList(cd.sortedWith(compareBy { it.ping }))
+                    val currentDNS = ArrayList(cd.sortedWith(compareBy { it.ping }))
                     adapter.addAll(0, currentDNS)
                     isLoading = false
                 }
@@ -82,29 +86,37 @@ class DNSListActivity : AppCompatActivity() {
             this.resources.configuration.locale.country
         }
 
-        view.findViewById<com.hbb20.CountryCodePicker>(R.id.ccp).setCountryForNameCode(countryCode)
+        view.findViewById<CountryCodePicker>(R.id.ccp).setCountryForNameCode(countryCode)
         val ab: AlertDialog.Builder = AlertDialog.Builder(this)
         ab.setCancelable(true).setView(view)
-        var ad = ab.show()
-        var addButton = view.findViewById<Button>(R.id.add)
+        val ad = ab.show()
+        val addButton = view.findViewById<Button>(R.id.add)
         addButton.setOnClickListener{
-            var ipInput = view.findViewById<TextView>(R.id.ipInput)
-            var ccpInput = view.findViewById<com.hbb20.CountryCodePicker>(R.id.ccp)
-            var ip = ipInput.text.toString().toLowerCase()
-            var ccp = ccpInput.selectedCountryNameCode
+            val ipInput = view.findViewById<TextView>(R.id.ipInput)
+            val ccpInput = view.findViewById<CountryCodePicker>(R.id.ccp)
+            val ip = ipInput.text.toString().toLowerCase(Locale.ROOT)
+            val ccp = ccpInput.selectedCountryNameCode
             thread(start = true) {
-                var di = DNSInfo(InetAddress.getByName("["+ip+"]"), ccp, "User DNS")
                 try {
-                    var ping = ping(di.address.hostAddress, 53)
-                    di.ping = ping
-                } catch(e: Throwable){
-                    di.ping = Int.MAX_VALUE
-                }
-                runOnUiThread {
-                    var selectAdapter = (findViewById<ListView>(R.id.dnsList).adapter as SelectDNSInfoListAdapter)
-                    selectAdapter.addItem(0, di)
-                    selectAdapter.notifyDataSetChanged()
-                    ad.dismiss()
+                    val di = DNSInfo(InetAddress.getByName("[" + ip + "]"), ccp, "User DNS")
+                    try {
+                        val ping = ping(di.address.hostAddress, 53)
+                        di.ping = ping
+                    } catch (e: Throwable) {
+                        di.ping = Int.MAX_VALUE
+                    }
+
+                    runOnUiThread {
+                        val selectAdapter =
+                            (findViewById<ListView>(R.id.dnsList).adapter as SelectDNSInfoListAdapter)
+                        selectAdapter.addItem(0, di)
+                        selectAdapter.notifyDataSetChanged()
+                        ad.dismiss()
+                    }
+                } catch (e: UnknownHostException){
+                    runOnUiThread {
+                        ipInput.error = "Unknown DNS host"
+                    }
                 }
             }
         }
@@ -122,7 +134,7 @@ class DNSListActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
             val result = Intent(this, MainActivity::class.java)
-            var adapter = findViewById<ListView>(R.id.dnsList).adapter as SelectDNSInfoListAdapter
+            val adapter = findViewById<ListView>(R.id.dnsList).adapter as SelectDNSInfoListAdapter
             val selectedDNS = adapter.getSelectedDNS()
             result.putExtra(MainActivity.DNS_LIST, serializeDNSInfoSet2StringList(selectedDNS))
             setResult(Activity.RESULT_OK, result)
