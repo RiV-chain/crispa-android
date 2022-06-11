@@ -45,8 +45,8 @@ class MeshTunService : VpnService() {
     private var tunInterface: ParcelFileDescriptor? = null
 
     companion object {
-        private const val TAG = "Mesh-service"
-        public const val IS_VPN_SERVICE_STOPPED = "VPN_STATUS"
+        const val TAG = "Mesh-service"
+        const val IS_VPN_SERVICE_STOPPED = "VPN_STATUS"
     }
 
     private val FOREGROUND_ID = 1338
@@ -63,8 +63,13 @@ class MeshTunService : VpnService() {
                 val dns = deserializeStringList2DNSInfoSet(intent.getStringArrayListExtra(MainActivity.CURRENT_DNS))
                 val staticIP: Boolean = intent.getBooleanExtra(MainActivity.STATIC_IP, false)
                 mesh = Mesh()
-                setupTunInterface(pi, peers, dns, staticIP)
-                foregroundNotification(FOREGROUND_ID, "Mesh service started")
+                try {
+                    setupTunInterface(pi, peers, dns, staticIP)
+                    foregroundNotification(FOREGROUND_ID, "Mesh service started")
+                } catch (ex: RuntimeException){
+                    ex.printStackTrace()
+                    foregroundNotification(FOREGROUND_ID, ex.message!!)
+                }
             }
             MainActivity.UPDATE_DNS ->{
                 val dns = deserializeStringList2DNSInfoSet(intent.getStringArrayListExtra(MainActivity.CURRENT_DNS))
@@ -187,7 +192,7 @@ class MeshTunService : VpnService() {
                 config["PublicKey"] = publicKey
             }
         }
-        var multicastInterface = emptyMap<String, Any>().toMutableMap()
+        val multicastInterface = emptyMap<String, Any>().toMutableMap()
         multicastInterface["Regex"] = ".*"
         multicastInterface["Beacon"] = true
         multicastInterface["Listen"] = true
@@ -283,11 +288,15 @@ class MeshTunService : VpnService() {
                     // https://developer.android.com/reference/android/support/v4/app/NotificationCompat.Builder.html#NotificationCompat.Builder(android.content.Context)
                     ""
                 }
-            var intent = Intent(this, MainActivity::class.java)
+            val intent = Intent(this, MainActivity::class.java)
             intent.putExtra(IS_VPN_SERVICE_STOPPED, isClosed);
-            var stackBuilder = TaskStackBuilder.create(this)
+            val stackBuilder = TaskStackBuilder.create(this)
             stackBuilder.addNextIntentWithParentStack(intent)
-            var pi = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT)
+            val pi = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                stackBuilder.getPendingIntent(0, PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT)
+            } else {
+                stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT)
+            }
             val b = NotificationCompat.Builder(this, channelId)
             b.setOngoing(true)
                 .setContentIntent(pi)
@@ -309,6 +318,4 @@ class MeshTunService : VpnService() {
         service.createNotificationChannel(chan)
         return channelId
     }
-
-
 }
