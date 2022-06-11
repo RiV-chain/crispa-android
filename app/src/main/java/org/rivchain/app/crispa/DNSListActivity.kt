@@ -98,7 +98,7 @@ class DNSListActivity : AppCompatActivity() {
             val ccp = ccpInput.selectedCountryNameCode
             thread(start = true) {
                 try {
-                    val di = DNSInfo(InetAddress.getByName("[" + ip + "]"), ccp, "User DNS")
+                    val di = DNSInfo(InetAddress.getByName("[$ip]"), ccp, "User DNS")
                     try {
                         val ping = ping(di.address.hostAddress, 53)
                         di.ping = ping
