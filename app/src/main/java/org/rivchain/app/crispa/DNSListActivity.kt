@@ -115,7 +115,7 @@ class DNSListActivity : AppCompatActivity() {
                     }
                 } catch (e: UnknownHostException){
                     runOnUiThread {
-                        ipInput.error = "Unknown DNS host"
+                        ipInput.error = "Unknown DNS host. Enter valid IPv6 address."
                     }
                 }
             }
