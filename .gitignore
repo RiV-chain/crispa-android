@@ -14,8 +14,10 @@
 /mesh/mesh.aar
 /mesh/mesh-sources.jar
 /mesh/build/
-/app/src/main/assets/mesh-0.3.8-linux-arm64
-/app/src/main/assets/mesh-0.3.8-linux-armhf
+/app/src/main/assets/mesh-*
 /.idea/
 
 acra.properties
+/keystore.properties
+/app/release/output-metadata.json
+/app/release/*.apk
