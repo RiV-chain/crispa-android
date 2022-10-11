@@ -3,5 +3,6 @@
     <string-array name="schemas">
         <item>TCP</item>
         <item>TLS</item>
+        <item>SCTP</item>
     </string-array>
 </resources>
