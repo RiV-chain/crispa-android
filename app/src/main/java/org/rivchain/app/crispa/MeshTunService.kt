@@ -85,7 +85,7 @@ class MeshTunService : VpnService() {
     private fun setupIOStreams(dns: MutableSet<DNSInfo>){
         address = mesh.addressString
 
-        var builder = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+        val builder = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             Builder()
                 .addAddress(address, 7)
                 .allowFamily(OsConstants.AF_INET)
@@ -158,16 +158,18 @@ class MeshTunService : VpnService() {
         pi?.send(this, MainActivity.STATUS_PEERS_UPDATE, intent)
     }
 
-    private fun getInterfaceNames(): String {
+    private fun getInterfaceIps(): String {
         val list: Enumeration<NetworkInterface> = NetworkInterface.getNetworkInterfaces()
         val interfaceNameSet = mutableSetOf<String>()
         while (list.hasMoreElements()) {
             val i: NetworkInterface = list.nextElement()
-            if(i.isLoopback){
+            if (i.isLoopback || i.displayName.contains("dummy")) {
                 continue
             }
-            interfaceNameSet.add(i.displayName)
-            Log.e("network_interfaces", "display name " + i.displayName)
+            for (address in i.inetAddresses){
+                Log.i("network_interfaces", "Display name " + i.displayName + " IP:"+address.hostAddress)
+                address.hostAddress?.let { interfaceNameSet.add(it) }
+            }
         }
         if(interfaceNameSet.isEmpty()){
             return ""
@@ -183,13 +185,14 @@ class MeshTunService : VpnService() {
 
         val mpathPeerSet = mutableSetOf<PeerInfo>()
         for(peer in peers){
-            if(peer.schema.equals("mpath://", ignoreCase = true)){
+            if(peer.schema.equals("mpath", ignoreCase = true)){
                 mpathPeerSet.add(peer)
             }
         }
         val nonMpathPeers = peers.toMutableSet()
-        val interfaces = getInterfaceNames()
+        val interfaces = getInterfaceIps()
         if(mpathPeerSet.isNotEmpty() && interfaces.isNotEmpty()) {
+            Log.i("network_interfaces", "Peer interfaces $interfaces")
             nonMpathPeers.removeAll(mpathPeerSet)
             val interfacePeers = mutableMapOf<String, Any>()
             interfacePeers[interfaces] = convertPeerInfoSet2PeerIdSet(mpathPeerSet)

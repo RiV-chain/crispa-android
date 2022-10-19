@@ -91,7 +91,7 @@ class MainActivity : AppCompatActivity() {
             } else {
                 stopVpn()
             }
-            setWiFiMulticastLock(isChecked)
+            //setWiFiMulticastLock(isChecked)
         }
         //save to shared preferences
         val preferences =
