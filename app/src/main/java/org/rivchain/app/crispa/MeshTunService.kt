@@ -14,6 +14,9 @@ import androidx.core.app.NotificationCompat
 import androidx.preference.PreferenceManager
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import mobile.Mesh
+import mobile.Mobile
+import org.acra.ACRA
 import org.mesh.app.crispa.models.DNSInfo
 import org.mesh.app.crispa.models.PeerInfo
 import org.mesh.app.crispa.models.config.Peer
@@ -21,15 +24,11 @@ import org.mesh.app.crispa.models.config.Utils.Companion.convertPeer2PeerStringL
 import org.mesh.app.crispa.models.config.Utils.Companion.convertPeerInfoSet2PeerIdSet
 import org.mesh.app.crispa.models.config.Utils.Companion.deserializeStringList2DNSInfoSet
 import org.mesh.app.crispa.models.config.Utils.Companion.deserializeStringList2PeerInfoSet
-import mobile.Mobile
-import mobile.Mesh
-import org.acra.ACRA
 import java.io.*
 import java.net.Inet6Address
+import java.net.NetworkInterface
+import java.util.*
 import kotlin.concurrent.thread
-import android.net.wifi.WifiManager
-
-
 
 
 class MeshTunService : VpnService() {
@@ -151,12 +150,29 @@ class MeshTunService : VpnService() {
         class Token : TypeToken<List<Peer>>()
         mesh.addressString
         ACRA.errorReporter.putCustomData("Peers JSON", mesh.peersJSON)
-        var meshPeers: List<Peer> = gson.fromJson(mesh.peersJSON, Token().type)
+        val meshPeers: List<Peer> = gson.fromJson(mesh.peersJSON, Token().type)
         val intent: Intent = Intent().putStringArrayListExtra(
             MainActivity.MESH_PEERS,
             convertPeer2PeerStringList(meshPeers)
         );
         pi?.send(this, MainActivity.STATUS_PEERS_UPDATE, intent)
+    }
+
+    private fun getInterfaceNames(): String {
+        val list: Enumeration<NetworkInterface> = NetworkInterface.getNetworkInterfaces()
+        val interfaceNameSet = mutableSetOf<String>()
+        while (list.hasMoreElements()) {
+            val i: NetworkInterface = list.nextElement()
+            if(i.isLoopback){
+                continue
+            }
+            interfaceNameSet.add(i.displayName)
+            Log.e("network_interfaces", "display name " + i.displayName)
+        }
+        if(interfaceNameSet.isEmpty()){
+            return ""
+        }
+        return interfaceNameSet.toSet().joinToString (separator = ",") {it}
     }
 
     private fun fixConfig(
@@ -165,11 +181,21 @@ class MeshTunService : VpnService() {
         staticIP: Boolean
     ): MutableMap<Any?, Any?> {
 
-        val whiteList = arrayListOf<String>()
-        whiteList.add("")
-        val blackList = arrayListOf<String>()
-        blackList.add("")
-        config["Peers"] = convertPeerInfoSet2PeerIdSet(peers)
+        val mpathPeerSet = mutableSetOf<PeerInfo>()
+        for(peer in peers){
+            if(peer.schema.equals("mpath://", ignoreCase = true)){
+                mpathPeerSet.add(peer)
+            }
+        }
+        val nonMpathPeers = peers.toMutableSet()
+        val interfaces = getInterfaceNames()
+        if(mpathPeerSet.isNotEmpty() && interfaces.isNotEmpty()) {
+            nonMpathPeers.removeAll(mpathPeerSet)
+            val interfacePeers = mutableMapOf<String, Any>()
+            interfacePeers[interfaces] = convertPeerInfoSet2PeerIdSet(mpathPeerSet)
+            config["InterfacePeers"] = interfacePeers
+        }
+        config["Peers"] = convertPeerInfoSet2PeerIdSet(nonMpathPeers)
         config["Listen"] = arrayListOf<String>()
         config["AdminListen"] = "tcp://localhost:9001"
         config["IfName"] = "tun0"
@@ -204,12 +230,8 @@ class MeshTunService : VpnService() {
         //(config["SessionFirewall"] as MutableMap<Any, Any>)["WhitelistEncryptionPublicKeys"] = whiteList
         //(config["SessionFirewall"] as MutableMap<Any, Any>)["BlacklistEncryptionPublicKeys"] = blackList
         //(config["SwitchOptions"] as MutableMap<Any, Any>)["MaxTotalQueueSize"] = 4194304
-        if (config["AutoStart"] == null) {
-            val tmpMap = emptyMap<String, Boolean>().toMutableMap()
-            tmpMap["WiFi"] = false
-            tmpMap["Mobile"] = false
-            config["AutoStart"] = tmpMap
-        }
+        config["NodeInfoPrivacy"] = false
+        config["NodeInfo"] = mutableMapOf<String, Any>()
         return config
     }
 
