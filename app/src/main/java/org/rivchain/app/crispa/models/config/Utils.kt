@@ -102,6 +102,15 @@ class Utils {
         }
 
         @JvmStatic
+        fun convertPeerInfoSet2InterfacePeerIdList(list: Set<PeerInfo>): Set<String> {
+            var out = mutableSetOf<String>()
+            for(p in list) {
+                out.add(p.toString())
+            }
+            return out
+        }
+
+        @JvmStatic
         fun convertPeer2PeerStringList(list: List<Peer>): ArrayList<String> {
             var out = ArrayList<String>()
             var gson = Gson()
