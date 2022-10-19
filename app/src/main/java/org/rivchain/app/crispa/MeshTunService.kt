@@ -193,9 +193,12 @@ class MeshTunService : VpnService() {
             nonMpathPeers.removeAll(mpathPeerSet)
             val interfacePeers = mutableMapOf<String, Any>()
             interfacePeers[interfaces] = convertPeerInfoSet2PeerIdSet(mpathPeerSet)
+            config["Peers"] = setOf<String>()
             config["InterfacePeers"] = interfacePeers
+        } else {
+            config["Peers"] = convertPeerInfoSet2PeerIdSet(nonMpathPeers)
+            config["InterfacePeers"] = mapOf<String, Any>()
         }
-        config["Peers"] = convertPeerInfoSet2PeerIdSet(nonMpathPeers)
         config["Listen"] = arrayListOf<String>()
         config["AdminListen"] = "tcp://localhost:9001"
         config["IfName"] = "tun0"
