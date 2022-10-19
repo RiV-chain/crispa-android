@@ -4,5 +4,6 @@
         <item>TCP</item>
         <item>TLS</item>
         <item>SCTP</item>
+        <item>MPATH</item>
     </string-array>
 </resources>
