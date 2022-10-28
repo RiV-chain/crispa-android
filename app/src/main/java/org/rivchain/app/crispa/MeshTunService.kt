@@ -229,7 +229,9 @@ class MeshTunService : VpnService() {
         multicastInterface["Beacon"] = true
         multicastInterface["Listen"] = true
         multicastInterface["Port"] = 0
-        config["MulticastInterfaces"] = listOf(multicastInterface)
+        multicastInterface["Priority"] = 0
+
+        config["MulticastInterfaces"] = arrayOf(multicastInterface)
         //(config["SessionFirewall"] as MutableMap<Any, Any>)["AllowFromDirect"] = true
         //(config["SessionFirewall"] as MutableMap<Any, Any>)["AllowFromRemote"] = true
         //(config["SessionFirewall"] as MutableMap<Any, Any>)["AlwaysAllowOutbound"] = true
