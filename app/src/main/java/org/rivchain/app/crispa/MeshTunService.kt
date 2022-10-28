@@ -204,7 +204,7 @@ class MeshTunService : VpnService() {
         }
         config["Listen"] = arrayListOf<String>()
         config["AdminListen"] = "tcp://localhost:9001"
-        config["IfName"] = "tun0"
+        config["IfName"] = "none"
         config["IfMTU"] = 65535
         if(staticIP) {
             val preferences =
@@ -229,7 +229,7 @@ class MeshTunService : VpnService() {
         multicastInterface["Beacon"] = true
         multicastInterface["Listen"] = true
         multicastInterface["Port"] = 0
-        (config["MulticastInterfaces"] as MutableList<Any>)[0] = multicastInterface
+        config["MulticastInterfaces"] = listOf(multicastInterface)
         //(config["SessionFirewall"] as MutableMap<Any, Any>)["AllowFromDirect"] = true
         //(config["SessionFirewall"] as MutableMap<Any, Any>)["AllowFromRemote"] = true
         //(config["SessionFirewall"] as MutableMap<Any, Any>)["AlwaysAllowOutbound"] = true
