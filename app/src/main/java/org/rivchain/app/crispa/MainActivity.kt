@@ -77,7 +77,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         setSupportActionBar(findViewById(R.id.toolbar))
         isStarted = isYggServiceRunning(this)
-        wifiManager = getApplicationContext().getSystemService(WIFI_SERVICE) as WifiManager
+        wifiManager = applicationContext.getSystemService(WIFI_SERVICE) as WifiManager
         val switchOn = findViewById<SwitchCompat>(R.id.switchOn)
         switchOn.isChecked = isStarted
 
