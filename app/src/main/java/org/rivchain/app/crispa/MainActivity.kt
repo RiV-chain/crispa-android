@@ -376,6 +376,13 @@ class MainActivity : AppCompatActivity() {
                             data.extras!!.getStringArrayList(MESH_PEERS)
                         )
                         val listView = findViewById<ListView>(R.id.peers)
+                        for (p in currentPeers){
+                            if(meshPeers.contains(p)){
+                                meshPeers.remove(p)
+                                meshPeers.add(p)
+                            }
+                        }
+
                         val adapter = PeerInfoListAdapter(
                             this@MainActivity,
                             meshPeers//.filter { it.schema != "self" }

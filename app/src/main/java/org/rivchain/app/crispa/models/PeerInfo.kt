@@ -53,7 +53,11 @@ class PeerInfo {
     }
 
     override fun equals(other: Any?): Boolean {
-        return toString() == other.toString()
+        return toString().equals(other.toString())
+    }
+
+    override fun hashCode(): Int {
+        return toString().hashCode()
     }
 
     fun getCountry(context: Context): CCPCountry? {
