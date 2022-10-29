@@ -372,7 +372,7 @@ class MainActivity : AppCompatActivity() {
                 ipLayout.visibility = View.GONE
             }
             STATUS_PEERS_UPDATE -> {
-                if (data!!.extras != null && data.extras!!.getStringArrayList(MESH_PEERS)!=null) {
+                if (data!!.extras != null) {
                     thread(start = true) {
                         val meshPeers = deserializePeerStringList2PeerInfoSet(
                             data.extras!!.getStringArrayList(MESH_PEERS)
@@ -380,7 +380,7 @@ class MainActivity : AppCompatActivity() {
                         val listView = findViewById<ListView>(R.id.peers)
                         val adapter = PeerInfoListAdapter(
                             this@MainActivity,
-                            meshPeers.filter { it.schema != "self" }
+                            meshPeers.sortedWith( compareBy { it.schema != "self" })
                                 .sortedWith(compareBy { it.ping })
                         )
                         runOnUiThread {
