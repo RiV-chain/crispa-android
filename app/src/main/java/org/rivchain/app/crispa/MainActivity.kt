@@ -377,6 +377,8 @@ class MainActivity : AppCompatActivity() {
                         )
                         val listView = findViewById<ListView>(R.id.peers)
                         for (p in currentPeers){
+                            //update peer from current peer list
+                            //which contains country flag
                             if(meshPeers.contains(p)){
                                 meshPeers.remove(p)
                                 meshPeers.add(p)
@@ -385,8 +387,8 @@ class MainActivity : AppCompatActivity() {
 
                         val adapter = PeerInfoListAdapter(
                             this@MainActivity,
-                            meshPeers//.filter { it.schema != "self" }
-                                .sortedWith(compareBy { it.countryCode != null })
+                            meshPeers
+                                .sortedWith(compareBy { !it.isMeshPeer })
                                 .sortedWith(compareBy { it.ping })
                         )
                         runOnUiThread {

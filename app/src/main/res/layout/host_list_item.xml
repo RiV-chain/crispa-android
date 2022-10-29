@@ -1,7 +1,7 @@
 <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_height="wrap_content"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:orientation="horizontal"
         android:gravity="center_vertical">
     <FrameLayout
@@ -10,18 +10,20 @@
             android:padding="2dp">
         <ImageView
                 android:id="@+id/countryFlag"
-                android:layout_width="match_parent"
+                android:src="@drawable/mesh_80x54"
+                android:layout_width="25dp"
                 android:layout_height="match_parent"
-                android:scaleType="fitStart"/>
+                android:scaleType="fitCenter"/>
     </FrameLayout>
     <TextView
             android:id="@+id/hostInfoText"
-            android:layout_width="match_parent"
+            android:text=""
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
-            android:paddingEnd="20dp"
             android:minHeight="22dp"
             android:textSize="13sp"
+            android:paddingLeft="3dp"
             android:textColor="@color/white"
-            android:paddingRight="20dp" />
+ />
 </LinearLayout>

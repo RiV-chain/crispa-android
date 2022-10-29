@@ -32,7 +32,7 @@ class PeerInfoListAdapter(
         }
         val currentPeer = allPeers[position]
         if(currentPeer.isMeshPeer){
-            //TODO set mesh icon
+            peerInfoHolder.countryFlag.setImageResource(R.drawable.mesh_80x54)
         } else {
             peerInfoHolder.countryFlag.setImageResource(currentPeer.getCountry(mContext)!!.flagID)
         }
