@@ -122,15 +122,19 @@ class Utils {
 
         @JvmStatic
         fun deserializePeerStringList2PeerInfoSet(list: List<String>?): MutableSet<PeerInfo> {
-            var gson = Gson()
+            val gson = Gson()
             ACRA.errorReporter.putCustomData("Peer list", gson.toJson(list))
-            var out = mutableSetOf<PeerInfo>()
+            val out = mutableSetOf<PeerInfo>()
             if (list != null) {
                 for(s in list) {
-                    var p = gson.fromJson(s, Peer::class.java)
-                    var fixWlanPart = p.remote.substring(p.remote.indexOf('%'), p.remote.indexOf(']'))
-                    var fixedUrlString = p.remote.replace(fixWlanPart, "")
-                    var url = URI(fixedUrlString)
+                    val p = gson.fromJson(s, Peer::class.java)
+                    val fixWlanPart = if (p.remote.indexOf('%') > 0 && p.remote.indexOf(']') > 0) {
+                            p.remote.substring(p.remote.indexOf('%'), p.remote.indexOf(']'))
+                    } else {
+                            p.remote
+                    }
+                    val fixedUrlString = p.remote.replace(fixWlanPart, "")
+                    val url = URI(fixedUrlString)
                     out.add(
                         PeerInfo(
                             url.scheme,
