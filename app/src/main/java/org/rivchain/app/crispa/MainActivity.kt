@@ -372,7 +372,7 @@ class MainActivity : AppCompatActivity() {
                 ipLayout.visibility = View.GONE
             }
             STATUS_PEERS_UPDATE -> {
-                if (data!!.extras != null) {
+                if (data!!.extras != null && data.extras!!.getStringArrayList(MESH_PEERS)!=null) {
                     thread(start = true) {
                         val meshPeers = deserializePeerStringList2PeerInfoSet(
                             data.extras!!.getStringArrayList(MESH_PEERS)
