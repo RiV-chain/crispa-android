@@ -355,9 +355,7 @@ class MainActivity : AppCompatActivity() {
         when (resultCode) {
             STATUS_START -> {
                 print("service started")
-                if (this.currentPeers.isEmpty()) {
-                    checkPeers()
-                }
+                checkPeers()
             }
             STATUS_FINISH -> {
                 isStarted = true

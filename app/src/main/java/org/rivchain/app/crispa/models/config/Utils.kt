@@ -128,12 +128,12 @@ class Utils {
             if (list != null) {
                 for(s in list) {
                     val p = gson.fromJson(s, Peer::class.java)
-                    val fixWlanPart = if (p.remote.indexOf('%') > 0 && p.remote.indexOf(']') > 0) {
-                            p.remote.substring(p.remote.indexOf('%'), p.remote.indexOf(']'))
+                    val fixedUrlString = if (p.remote.indexOf('%') > 0 && p.remote.indexOf(']') > 0) {
+                            val fixWlanPart = p.remote.substring(p.remote.indexOf('%'), p.remote.indexOf(']'))
+                            p.remote.replace(fixWlanPart, "")
                     } else {
                             p.remote
                     }
-                    val fixedUrlString = p.remote.replace(fixWlanPart, "")
                     val url = URI(fixedUrlString)
                     out.add(
                         PeerInfo(
