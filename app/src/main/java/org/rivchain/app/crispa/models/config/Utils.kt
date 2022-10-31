@@ -4,10 +4,7 @@ import com.google.gson.Gson
 import org.mesh.app.crispa.models.DNSInfo
 import org.mesh.app.crispa.models.PeerInfo
 import org.acra.ACRA
-import java.net.InetAddress
-import java.net.InetSocketAddress
-import java.net.Socket
-import java.net.URI
+import java.net.*
 
 class Utils {
 
@@ -134,16 +131,22 @@ class Utils {
                     } else {
                             p.remote
                     }
-                    val url = URI(fixedUrlString)
-                    out.add(
-                        PeerInfo(
-                            url.scheme,
-                            InetAddress.getByName(url.host),
-                            url.port,
-                            null,
-                            true
+                    try {
+                        val url = URI(fixedUrlString)
+                        out.add(
+                            PeerInfo(
+                                url.scheme,
+                                InetAddress.getByName(url.host),
+                                url.port,
+                                null,
+                                true
+                            )
                         )
-                    )
+                    } catch (ex: URISyntaxException){
+                        //skip peer when Remote URL invalid:
+                        //see https://github.com/yggdrasil-network/yggdrasil-go/issues/973
+                        ex.printStackTrace()
+                    }
                 }
             }
             return out

@@ -5,12 +5,7 @@ import com.hbb20.CCPCountry
 import com.hbb20.CountryCodePicker
 import java.net.InetAddress
 
-
 class PeerInfo {
-
-    constructor(){
-
-    }
 
     constructor(schema: String, address: InetAddress, port: Int, countryCode: String){
         this.schema = schema
@@ -37,8 +32,8 @@ class PeerInfo {
         this.isMeshPeer = isMeshPeer
     }
 
-    lateinit var schema: String
-    lateinit var hostName: String
+    var schema: String
+    var hostName: String
     var port = 0
     var countryCode: String?=null
     var ping: Int = Int.MAX_VALUE
