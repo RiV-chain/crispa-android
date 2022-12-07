@@ -241,7 +241,7 @@ class MeshTunService : VpnService() {
         config["NodeInfoPrivacy"] = false
         config["NodeInfo"] = mutableMapOf<String, Any>()
         val networkDomain = mutableMapOf<String, Any>()
-        networkDomain["Prefix"] = arrayOf(252)
+        networkDomain["Prefix"] = arrayOf(0xfc.toByte())
         config["NetworkDomain"] = networkDomain
 
         return config
