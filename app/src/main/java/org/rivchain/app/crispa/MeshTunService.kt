@@ -240,6 +240,10 @@ class MeshTunService : VpnService() {
         //(config["SwitchOptions"] as MutableMap<Any, Any>)["MaxTotalQueueSize"] = 4194304
         config["NodeInfoPrivacy"] = false
         config["NodeInfo"] = mutableMapOf<String, Any>()
+        val networkDomain = mutableMapOf<String, Any>()
+        networkDomain["Prefix"] = arrayOf(252)
+        config["NetworkDomain"] = networkDomain
+
         return config
     }
 
