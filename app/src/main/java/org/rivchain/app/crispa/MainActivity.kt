@@ -10,7 +10,10 @@ import android.os.Bundle
 import android.util.Log
 import android.view.Gravity
 import android.view.View
+import android.webkit.WebChromeClient
+import android.webkit.WebSettings
 import android.webkit.WebView
+import android.webkit.WebViewClient
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SwitchCompat
@@ -365,6 +368,18 @@ class MainActivity : AppCompatActivity() {
                 address = data!!.getStringExtra(IPv6)
                 findViewById<TextView>(R.id.ip).text = address
                 val webview = findViewById<WebView>(R.id.webview)
+                val settings: WebSettings = webview.getSettings()
+                settings.defaultTextEncodingName = "utf-8"
+                settings.setJavaScriptEnabled(true)
+                webview.setWebChromeClient(WebChromeClient())
+                webview.setWebViewClient(WebViewClient())
+                settings.domStorageEnabled = true
+                // Enable the WebView to access content through file: URLs
+                settings.apply {
+                    allowFileAccess = true
+                    allowFileAccessFromFileURLs = true
+                    allowUniversalAccessFromFileURLs = true
+                }
                 webview.loadUrl("http://localhost:19019")
             }
             STATUS_STOP -> {
