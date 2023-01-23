@@ -10,6 +10,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.Gravity
 import android.view.View
+import android.webkit.WebView
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SwitchCompat
@@ -363,6 +364,8 @@ class MainActivity : AppCompatActivity() {
                 ipLayout.visibility = View.VISIBLE
                 address = data!!.getStringExtra(IPv6)
                 findViewById<TextView>(R.id.ip).text = address
+                val webview = findViewById<WebView>(R.id.webview)
+                webview.loadUrl("http://localhost:19019")
             }
             STATUS_STOP -> {
                 isStarted = false

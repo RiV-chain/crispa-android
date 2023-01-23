@@ -5,6 +5,16 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         android:background="@color/grey">
 
+    <WebView
+            android:id="@+id/webview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+    </WebView>
+
+    <FrameLayout
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
     <LinearLayout
             android:id="@+id/ipLayout"
             android:layout_width="match_parent"
@@ -166,4 +176,5 @@
             app:layout_constraintBottom_toBottomOf="parent"
             android:text=""
             android:textSize="10sp" />
+    </FrameLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
