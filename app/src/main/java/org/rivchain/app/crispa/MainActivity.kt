@@ -10,11 +10,6 @@ import android.os.Bundle
 import android.util.Log
 import android.view.Gravity
 import android.view.View
-import android.view.WindowManager
-import android.webkit.WebChromeClient
-import android.webkit.WebSettings
-import android.webkit.WebView
-import android.webkit.WebViewClient
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SwitchCompat
@@ -368,29 +363,6 @@ class MainActivity : AppCompatActivity() {
                 ipLayout.visibility = View.VISIBLE
                 address = data!!.getStringExtra(IPv6)
                 findViewById<TextView>(R.id.ip).text = address
-                val webview = findViewById<WebView>(R.id.webview)
-                val settings: WebSettings = webview.getSettings()
-                settings.defaultTextEncodingName = "utf-8"
-                settings.setJavaScriptEnabled(true)
-                webview.setInitialScale(getScale())
-                println("scale:"+getScale())
-                settings.setJavaScriptEnabled(true);
-                //settings.setLoadWithOverviewMode(true);
-                //settings.setUseWideViewPort(true);
-                //settings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
-                //webview.setScrollBarStyle(WebView.SCROLLBARS_OUTSIDE_OVERLAY);
-                //webview.setScrollbarFadingEnabled(false);
-
-                webview.setWebChromeClient(WebChromeClient())
-                webview.setWebViewClient(WebViewClient())
-                settings.domStorageEnabled = true
-                // Enable the WebView to access content through file: URLs
-                settings.apply {
-                    allowFileAccess = true
-                    allowFileAccessFromFileURLs = true
-                    allowUniversalAccessFromFileURLs = true
-                }
-                webview.loadUrl("http://localhost:19019")
             }
             STATUS_STOP -> {
                 isStarted = false
@@ -429,14 +401,6 @@ class MainActivity : AppCompatActivity() {
 
             }
         }
-    }
-
-    private fun getScale(): Int {
-        val display = (getSystemService(WINDOW_SERVICE) as WindowManager).defaultDisplay
-        val width = display.width
-        var `val`: Double = width / 500.0
-        `val` = `val` * 100.0
-        return `val`.toInt()
     }
 
     private fun showToast(text: String){
