@@ -74,9 +74,6 @@ class MeshTunService : VpnService() {
                 val dns = deserializeStringList2DNSInfoSet(intent.getStringArrayListExtra(MainActivity.CURRENT_DNS))
                 setupIOStreams(dns)
             }
-            MainActivity.UPDATE_PEERS ->{
-                sendMeshPeerStatus(pi)
-            }
         }
 
         return START_NOT_STICKY
@@ -144,18 +141,6 @@ class MeshTunService : VpnService() {
         }
         val intent: Intent = Intent().putExtra(MainActivity.IPv6, address)
         pi.send(this, MainActivity.STATUS_FINISH, intent)
-    }
-
-    private fun sendMeshPeerStatus(pi: PendingIntent?){
-        class Token : TypeToken<List<Peer>>()
-        mesh.addressString
-        ACRA.errorReporter.putCustomData("Peers JSON", mesh.peersJSON)
-        val meshPeers: List<Peer> = gson.fromJson(mesh.peersJSON, Token().type)
-        val intent: Intent = Intent().putStringArrayListExtra(
-            MainActivity.MESH_PEERS,
-            convertPeer2PeerStringList(meshPeers)
-        );
-        pi?.send(this, MainActivity.STATUS_PEERS_UPDATE, intent)
     }
 
     private fun getInterfaceIps(): String {

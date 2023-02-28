@@ -36,8 +36,6 @@ import kotlin.concurrent.thread
 class MainActivity : AppCompatActivity() {
 
     companion object {
-        const val STATUS_PEERS_UPDATE = 12
-        const val MESH_PEERS = "MESH_PEERS"
         const val STATIC_IP = "STATIC_IP_FLAG"
         const val privateKey = "privateKey"
         const val publicKey = "publicKey"
@@ -45,7 +43,6 @@ class MainActivity : AppCompatActivity() {
         const val STOP = "STOP"
         const val START = "START"
         const val UPDATE_DNS = "UPDATE_DNS"
-        const val UPDATE_PEERS = "UPDATE_PEERS"
         const val PARAM_PINTENT = "pendingIntent"
         const val STATUS_START = 7
         const val STATUS_FINISH = 8
