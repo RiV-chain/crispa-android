@@ -243,7 +243,7 @@ class MeshTunService : VpnService() {
         val networkDomain = mutableMapOf<String, Any>()
         networkDomain["Prefix"] = "fc"
         config["NetworkDomain"] = networkDomain
-
+        config["WwwRoot"] = classLoader.getResource("index.html").file.replace("file:","").replace("!/index.html", "")
         return config
     }
 
