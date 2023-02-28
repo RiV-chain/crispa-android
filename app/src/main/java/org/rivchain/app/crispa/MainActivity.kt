@@ -298,7 +298,9 @@ class MainActivity : AppCompatActivity() {
                     try {
                         updatePeers()
                     } catch (e: Exception){
-                        showToast("Could not get peers.$e")
+                        runOnUiThread {
+                            showToast("Could not get peers.$e")
+                        }
                     }
                 }
             }

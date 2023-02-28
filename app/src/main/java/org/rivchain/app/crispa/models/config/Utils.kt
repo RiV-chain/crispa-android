@@ -131,7 +131,7 @@ class Utils {
                     out.add(
                         PeerInfo(
                             url.scheme,
-                            InetAddress.getByName(p.remote_ip),
+                            InetAddress.getByName(url.host),
                             url.port,
                             p.country_short,
                             p.multicast
