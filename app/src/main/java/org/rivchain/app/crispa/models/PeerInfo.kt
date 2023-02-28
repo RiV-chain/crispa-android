@@ -7,17 +7,7 @@ import java.net.InetAddress
 
 class PeerInfo {
 
-    constructor(schema: String, address: InetAddress, port: Int, countryCode: String){
-        this.schema = schema
-        var a = address.toString();
-        if(a.lastIndexOf('/')>0){
-            this.hostName = a.split("/")[0]
-        } else {
-            this.hostName = a.substring(1)
-        }
-        this.port = port
-        this.countryCode = countryCode
-    }
+    constructor()
 
     constructor(schema: String, address: InetAddress, port: Int, countryCode: String?, isMeshPeer: Boolean){
         this.schema = schema
@@ -32,8 +22,8 @@ class PeerInfo {
         this.isMeshPeer = isMeshPeer
     }
 
-    var schema: String
-    var hostName: String
+    lateinit var schema: String
+    lateinit var hostName: String
     var port = 0
     var countryCode: String?=null
     var ping: Int = Int.MAX_VALUE

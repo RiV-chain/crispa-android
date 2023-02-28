@@ -188,7 +188,6 @@ class MeshTunService : VpnService() {
             config["InterfacePeers"] = mapOf<String, Any>()
         }
         config["Listen"] = arrayListOf<String>()
-        config["AdminListen"] = "tcp://localhost:9001"
         config["IfName"] = "none"
         config["IfMTU"] = 65535
         if(staticIP) {
@@ -292,33 +291,31 @@ class MeshTunService : VpnService() {
     }
 
     private fun foregroundNotification(FOREGROUND_ID: Int, text: String) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            val channelId =
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    createNotificationChannel(TAG, "Mesh service")
-                } else {
-                    // If earlier version channel ID is not used
-                    // https://developer.android.com/reference/android/support/v4/app/NotificationCompat.Builder.html#NotificationCompat.Builder(android.content.Context)
-                    ""
-                }
-            val intent = Intent(this, MainActivity::class.java)
-            intent.putExtra(IS_VPN_SERVICE_STOPPED, isClosed);
-            val stackBuilder = TaskStackBuilder.create(this)
-            stackBuilder.addNextIntentWithParentStack(intent)
-            val pi = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                stackBuilder.getPendingIntent(0, PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT)
+        val channelId =
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                createNotificationChannel(TAG, "Mesh service")
             } else {
-                stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT)
+                // If earlier version channel ID is not used
+                // https://developer.android.com/reference/android/support/v4/app/NotificationCompat.Builder.html#NotificationCompat.Builder(android.content.Context)
+                ""
             }
-            val b = NotificationCompat.Builder(this, channelId)
-            b.setOngoing(true)
-                .setContentIntent(pi)
-                .setContentTitle(getString(R.string.app_name))
-                .setContentText(text)
-                .setSmallIcon(R.mipmap.riv_launcher)
-                .setTicker(text)
-            startForeground(FOREGROUND_ID, b.build())
+        val intent = Intent(this, MainActivity::class.java)
+        intent.putExtra(IS_VPN_SERVICE_STOPPED, isClosed);
+        val stackBuilder = TaskStackBuilder.create(this)
+        stackBuilder.addNextIntentWithParentStack(intent)
+        val pi = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            stackBuilder.getPendingIntent(0, PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT)
+        } else {
+            stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT)
         }
+        val b = NotificationCompat.Builder(this, channelId)
+        b.setOngoing(true)
+            .setContentIntent(pi)
+            .setContentTitle(getString(R.string.app_name))
+            .setContentText(text)
+            .setSmallIcon(R.mipmap.riv_launcher)
+            .setTicker(text)
+        startForeground(FOREGROUND_ID, b.build())
     }
 
     @RequiresApi(Build.VERSION_CODES.O)

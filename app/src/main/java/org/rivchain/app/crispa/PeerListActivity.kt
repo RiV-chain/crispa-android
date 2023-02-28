@@ -148,7 +148,8 @@ class PeerListActivity : AppCompatActivity() {
                                                     url.scheme,
                                                     address,
                                                     url.port,
-                                                    ccp.nameCode
+                                                    ccp.nameCode,
+                                                    false
                                                 )
                                             val ping = ping(url.host, url.port)
                                             peerInfo.ping = ping
@@ -290,7 +291,7 @@ class PeerListActivity : AppCompatActivity() {
                 val pi = PeerInfo(schema,
                     withContext(Dispatchers.IO) {
                         InetAddress.getByName(ip)
-                    }, port, ccp)
+                    }, port, ccp, false)
                 try {
                     val ping = ping(pi.hostName, pi.port)
                     pi.ping = ping
