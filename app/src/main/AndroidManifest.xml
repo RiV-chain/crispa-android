@@ -15,7 +15,8 @@
             android:label="@string/app_name"
             android:roundIcon="@mipmap/riv_launcher_round"
             android:supportsRtl="true"
-            tools:ignore="GoogleAppIndexingWarning">
+            tools:ignore="GoogleAppIndexingWarning"
+            android:usesCleartextTraffic="true">
         <activity
                 android:name="org.mesh.app.crispa.AboutActivity"
                 android:parentActivityName="org.mesh.app.crispa.MainActivity"

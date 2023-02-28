@@ -295,7 +295,11 @@ class MainActivity : AppCompatActivity() {
             while(true) {
                 Thread.sleep(5000)
                 if(isStarted) {
-                    updatePeers()
+                    try {
+                        updatePeers()
+                    } catch (e: Exception){
+                        showToast("Could not get peers.$e")
+                    }
                 }
             }
         }

@@ -11,6 +11,7 @@ data class Peer (
     @SerializedName("Coords") var coords : Array<Int>,
     @SerializedName("Port") var port : Int,
     @SerializedName("Remote") var remote : String,
+    @SerializedName("RemoteIP") var remote_ip : String,
     @SerializedName("RXBytes") var bytes_recvd : Long,
     @SerializedName("TXBytes") var bytes_sent : Long,
     @SerializedName("Uptime") var uptime : Float,
