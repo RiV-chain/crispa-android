@@ -20,13 +20,16 @@ import org.mesh.app.crispa.models.DNSInfo
 import org.mesh.app.crispa.models.PeerInfo
 import org.mesh.app.crispa.models.config.DNSInfoListAdapter
 import org.mesh.app.crispa.models.config.PeerInfoListAdapter
-import org.mesh.app.crispa.models.config.Utils.Companion.deserializePeerStringList2PeerInfoSet
+import org.mesh.app.crispa.models.config.Utils.Companion.deserializePeerString2PeerInfoSet
 import org.mesh.app.crispa.models.config.Utils.Companion.deserializeStringList2DNSInfoSet
 import org.mesh.app.crispa.models.config.Utils.Companion.deserializeStringList2PeerInfoSet
 import org.mesh.app.crispa.models.config.Utils.Companion.deserializeStringSet2DNSInfoSet
 import org.mesh.app.crispa.models.config.Utils.Companion.deserializeStringSet2PeerInfoSet
 import org.mesh.app.crispa.models.config.Utils.Companion.serializeDNSInfoSet2StringList
 import org.mesh.app.crispa.models.config.Utils.Companion.serializePeerInfoSet2StringList
+import java.io.ByteArrayOutputStream
+import java.net.URL
+import java.nio.charset.Charset
 import kotlin.concurrent.thread
 
 
@@ -55,6 +58,7 @@ class MainActivity : AppCompatActivity() {
         const val CURRENT_PEERS = "CURRENT_PEERS_v1.2.1"
         const val CURRENT_DNS = "CURRENT_DNS_v1.2"
         const val START_VPN = "START_VPN"
+        const val REST_URL = "http://localhost:19019/api/"
         private const val TAG = "Mesh"
         private const val VPN_REQUEST_CODE = 0x0F
 
@@ -259,12 +263,30 @@ class MainActivity : AppCompatActivity() {
 
     private fun updatePeers(){
         Log.d(TAG, "Update Peers")
-        val intent = Intent(this, MeshTunService::class.java)
-        val TASK_CODE = 100
-        val pi = createPendingResult(TASK_CODE, intent, 0)
-        intent.putExtra(PARAM_PINTENT, pi)
-        intent.putExtra(COMMAND, UPDATE_PEERS)
-        startService(intent)
+        //moved to REST api
+        var peers = downloadJson("$REST_URL/peers")
+        //update UI
+        val meshPeers = deserializePeerString2PeerInfoSet(peers)
+        val listView = findViewById<ListView>(R.id.peers)
+        val adapter = PeerInfoListAdapter(
+            this@MainActivity,
+            meshPeers
+                .sortedWith(compareBy { !it.isMeshPeer })
+                .sortedWith(compareBy { it.ping })
+        )
+        runOnUiThread {
+            listView.adapter = adapter
+        }
+    }
+
+    fun downloadJson(link: String): String {
+        URL(link).openStream().use { input ->
+            val outStream = ByteArrayOutputStream()
+            outStream.use { output ->
+                input.copyTo(output)
+            }
+            return String(outStream.toByteArray(), Charset.forName("UTF-8"))
+        }
     }
 
     private fun checkPeers(){
@@ -368,34 +390,6 @@ class MainActivity : AppCompatActivity() {
                 isStarted = false
                 val ipLayout = findViewById<LinearLayout>(R.id.ipLayout)
                 ipLayout.visibility = View.GONE
-            }
-            STATUS_PEERS_UPDATE -> {
-                if (data!!.extras != null) {
-                    thread(start = true) {
-                        val meshPeers = deserializePeerStringList2PeerInfoSet(
-                            data.extras!!.getStringArrayList(MESH_PEERS)
-                        )
-                        val listView = findViewById<ListView>(R.id.peers)
-                        for (p in currentPeers){
-                            //update peer from current peer list
-                            //which contains country flag
-                            if(meshPeers.contains(p)){
-                                meshPeers.remove(p)
-                                meshPeers.add(p)
-                            }
-                        }
-
-                        val adapter = PeerInfoListAdapter(
-                            this@MainActivity,
-                            meshPeers
-                                .sortedWith(compareBy { !it.isMeshPeer })
-                                .sortedWith(compareBy { it.ping })
-                        )
-                        runOnUiThread {
-                            listView.adapter = adapter
-                        }
-                    }
-                }
             }
             else -> { // Note the block
 

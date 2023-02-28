@@ -13,6 +13,8 @@ data class Peer (
     @SerializedName("Remote") var remote : String,
     @SerializedName("RXBytes") var bytes_recvd : Long,
     @SerializedName("TXBytes") var bytes_sent : Long,
-    @SerializedName("Uptime") var uptime : Float
-
+    @SerializedName("Uptime") var uptime : Float,
+    @SerializedName("Multicast") var multicast: Boolean,
+    @SerializedName("CountryShort") var country_short: String,
+    @SerializedName("CountryLong") var country_long: String,
 )

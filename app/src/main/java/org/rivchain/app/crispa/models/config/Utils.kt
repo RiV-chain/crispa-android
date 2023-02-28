@@ -1,10 +1,13 @@
 package org.mesh.app.crispa.models.config
 
 import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
+import org.acra.ACRA
 import org.mesh.app.crispa.models.DNSInfo
 import org.mesh.app.crispa.models.PeerInfo
-import org.acra.ACRA
+import java.lang.reflect.Type
 import java.net.*
+
 
 class Utils {
 
@@ -99,15 +102,6 @@ class Utils {
         }
 
         @JvmStatic
-        fun convertPeerInfoSet2InterfacePeerIdList(list: Set<PeerInfo>): Set<String> {
-            var out = mutableSetOf<String>()
-            for(p in list) {
-                out.add(p.toString())
-            }
-            return out
-        }
-
-        @JvmStatic
         fun convertPeer2PeerStringList(list: List<Peer>): ArrayList<String> {
             var out = ArrayList<String>()
             var gson = Gson()
@@ -118,35 +112,35 @@ class Utils {
         }
 
         @JvmStatic
-        fun deserializePeerStringList2PeerInfoSet(list: List<String>?): MutableSet<PeerInfo> {
+        fun deserializePeerString2PeerInfoSet(s: String): MutableSet<PeerInfo> {
             val gson = Gson()
-            ACRA.errorReporter.putCustomData("Peer list", gson.toJson(list))
+            val listType: Type = object : TypeToken<ArrayList<Peer>>() {}.type
+            ACRA.errorReporter.putCustomData("Peer list", s)
             val out = mutableSetOf<PeerInfo>()
-            if (list != null) {
-                for(s in list) {
-                    val p = gson.fromJson(s, Peer::class.java)
-                    val fixedUrlString = if (p.remote.indexOf('%') > 0 && p.remote.indexOf(']') > 0) {
-                            val fixWlanPart = p.remote.substring(p.remote.indexOf('%'), p.remote.indexOf(']'))
-                            p.remote.replace(fixWlanPart, "")
-                    } else {
-                            p.remote
-                    }
-                    try {
-                        val url = URI(fixedUrlString)
-                        out.add(
-                            PeerInfo(
-                                url.scheme,
-                                InetAddress.getByName(url.host),
-                                url.port,
-                                null,
-                                true
-                            )
+            val peers: List<Peer> = gson.fromJson(s, listType)
+            for (p in peers) {
+                val fixedUrlString = if (p.remote.indexOf('%') > 0 && p.remote.indexOf(']') > 0) {
+                    val fixWlanPart =
+                        p.remote.substring(p.remote.indexOf('%'), p.remote.indexOf(']'))
+                    p.remote.replace(fixWlanPart, "")
+                } else {
+                    p.remote
+                }
+                try {
+                    val url = URI(fixedUrlString)
+                    out.add(
+                        PeerInfo(
+                            url.scheme,
+                            InetAddress.getByName(url.host),
+                            url.port,
+                            p.country_short,
+                            p.multicast
                         )
-                    } catch (ex: URISyntaxException){
-                        //skip peer when Remote URL invalid:
-                        //see https://github.com/yggdrasil-network/yggdrasil-go/issues/973
-                        ex.printStackTrace()
-                    }
+                    )
+                } catch (ex: URISyntaxException) {
+                    //skip peer when Remote URL invalid:
+                    //see https://github.com/yggdrasil-network/yggdrasil-go/issues/973
+                    ex.printStackTrace()
                 }
             }
             return out
