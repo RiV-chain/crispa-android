@@ -217,12 +217,6 @@ class MeshTunService : VpnService() {
         multicastInterface["Priority"] = 0
 
         config["MulticastInterfaces"] = arrayOf(multicastInterface)
-        //(config["SessionFirewall"] as MutableMap<Any, Any>)["AllowFromDirect"] = true
-        //(config["SessionFirewall"] as MutableMap<Any, Any>)["AllowFromRemote"] = true
-        //(config["SessionFirewall"] as MutableMap<Any, Any>)["AlwaysAllowOutbound"] = true
-        //(config["SessionFirewall"] as MutableMap<Any, Any>)["WhitelistEncryptionPublicKeys"] = whiteList
-        //(config["SessionFirewall"] as MutableMap<Any, Any>)["BlacklistEncryptionPublicKeys"] = blackList
-        //(config["SwitchOptions"] as MutableMap<Any, Any>)["MaxTotalQueueSize"] = 4194304
         config["NodeInfoPrivacy"] = false
         config["NodeInfo"] = mutableMapOf<String, Any>()
         val networkDomain = mutableMapOf<String, Any>()
