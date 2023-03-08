@@ -1,3 +1,6 @@
 [submodule "mesh/RiV-mesh"]
 	path = mesh/RiV-mesh
 	url = https://github.com/RiV-chain/RiV-mesh.git
+[submodule "mesh-vpn/RiVPN"]
+	path = mesh-vpn/RiVPN
+	url = https://github.com/RiV-chain/RiVPN.git
