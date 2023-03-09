@@ -17,8 +17,8 @@ android {
         //noinspection ExpiredTargetSdkVersion required for peers multicast < API 30
         targetSdkVersion 29
 
-        versionCode 75
-        versionName "0.4.7.4"
+        versionCode 76
+        versionName "0.5.1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         setProperty("archivesBaseName", project.getParent().name+"-"+versionName)
 
@@ -78,7 +78,6 @@ dependencies {
     implementation 'ch.acra:acra-dialog:5.9.6'
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation project(path: ':mesh')
-    implementation project(path: ':mesh-vpn')
 
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
