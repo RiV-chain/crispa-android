@@ -71,7 +71,6 @@
                     android:layout_height="wrap_content"
                     app:layout_constraintTop_toTopOf="parent">
 
-
                 <EditText
                         android:id="@+id/ipv4_edittext"
                         android:layout_width="match_parent"

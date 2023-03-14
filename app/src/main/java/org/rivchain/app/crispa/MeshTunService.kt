@@ -13,14 +13,10 @@ import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import androidx.preference.PreferenceManager
 import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 import mobile.Mesh
 import mobile.Mobile
-import org.acra.ACRA
 import org.mesh.app.crispa.models.DNSInfo
 import org.mesh.app.crispa.models.PeerInfo
-import org.mesh.app.crispa.models.config.Peer
-import org.mesh.app.crispa.models.config.Utils.Companion.convertPeer2PeerStringList
 import org.mesh.app.crispa.models.config.Utils.Companion.convertPeerInfoSet2PeerIdSet
 import org.mesh.app.crispa.models.config.Utils.Companion.deserializeStringList2DNSInfoSet
 import org.mesh.app.crispa.models.config.Utils.Companion.deserializeStringList2PeerInfoSet
@@ -190,9 +186,9 @@ class MeshTunService : VpnService() {
         config["Listen"] = arrayListOf<String>()
         config["IfName"] = "none"
         config["IfMTU"] = 65535
+        val preferences =
+            PreferenceManager.getDefaultSharedPreferences(this.baseContext)
         if(staticIP) {
-            val preferences =
-                PreferenceManager.getDefaultSharedPreferences(this.baseContext)
             if(preferences.getString(MainActivity.STATIC_IP, null)==null) {
                 val publicKey = config["PublicKey"].toString()
                 val privateKey = config["PrivateKey"].toString()
@@ -219,9 +215,33 @@ class MeshTunService : VpnService() {
         config["NodeInfoPrivacy"] = false
         config["NodeInfo"] = mutableMapOf<String, Any>()
         val networkDomain = mutableMapOf<String, Any>()
-        networkDomain["Prefix"] = "fc"
+        val prefix = preferences.getString(MainActivity.NETWORK_DOMAIN_PREFIX, null)
+        if(prefix==null) {
+            networkDomain["Prefix"] = "fc"
+        } else {
+            networkDomain["Prefix"] = prefix
+        }
         config["NetworkDomain"] = networkDomain
         config["WwwRoot"] = classLoader.getResource("index.html").file.replace("file:","").replace("!/index.html", "")
+        //tunnel routing part
+        val tunnelRouting = emptyMap<String, Any>().toMutableMap()
+        val tunnelRoutingEnable = preferences.getBoolean(MainActivity.TUNNEL_ROUTING_ENABLE, false)
+        tunnelRouting["Enable"] = tunnelRoutingEnable
+        val iPv4RemoteSubnet = preferences.getString(MainActivity.IPV4_REMOTE_SUBNET, null)
+        if(iPv4RemoteSubnet!=null) {
+            val iPv4RemoteSubnets = emptyMap<String, Any>().toMutableMap()
+            val iPv4PublicKey = preferences.getString(MainActivity.IPV4_PUBLIC_KEY, "")
+            iPv4RemoteSubnets[iPv4RemoteSubnet] = iPv4PublicKey!!
+            tunnelRouting["IPv4RemoteSubnets"] = iPv4RemoteSubnets
+        }
+        val iPv6RemoteSubnet = preferences.getString(MainActivity.IPV6_REMOTE_SUBNET, null)
+        if(iPv6RemoteSubnet!=null) {
+            val iPv6RemoteSubnets = emptyMap<String, Any>().toMutableMap()
+            val iPv6PublicKey = preferences.getString(MainActivity.IPV6_PUBLIC_KEY, "")
+            iPv6RemoteSubnets[iPv6RemoteSubnet] = iPv6PublicKey!!
+            tunnelRouting["IPv4RemoteSubnets"] = iPv6RemoteSubnets
+        }
+        config["FeaturesConfig"] = tunnelRouting
         return config
     }
 

@@ -39,6 +39,12 @@ class MainActivity : AppCompatActivity() {
 
     companion object {
         const val STATIC_IP = "STATIC_IP_FLAG"
+        const val NETWORK_DOMAIN_PREFIX = "NETWORK_DOMAIN_PREFIX"
+        const val TUNNEL_ROUTING_ENABLE = "TUNNEL_ROUTING_ENABLE"
+        const val IPV4_REMOTE_SUBNET = "IPV4_REMOTE_SUBNET"
+        const val IPV6_REMOTE_SUBNET = "IPV6_REMOTE_SUBNET"
+        const val IPV4_PUBLIC_KEY = "IPV4_PUBLIC_KEY"
+        const val IPV6_PUBLIC_KEY = "IPV6_PUBLIC_KEY"
         const val privateKey = "privateKey"
         const val publicKey = "publicKey"
         const val COMMAND = "COMMAND"
