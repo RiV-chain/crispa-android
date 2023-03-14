@@ -29,7 +29,7 @@
                     android:background="@android:color/transparent"
                     android:elevation="8dp"
                     android:gravity="center_vertical"
-                    android:text="IP address:"
+                    android:text="IP address"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
@@ -85,7 +85,7 @@
                     android:background="@android:color/transparent"
                     android:elevation="8dp"
                     android:gravity="center_vertical"
-                    android:text="Peers:"
+                    android:text="Peers"
                     android:textColor="@color/dark_30"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -112,6 +112,7 @@
     </LinearLayout>
 
     <LinearLayout
+            android:id="@+id/vpnLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="20dp"
@@ -127,13 +128,62 @@
                 app:layout_constraintTop_toTopOf="parent">
 
             <TextView
+                    android:id="@+id/vpnLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:background="@android:color/transparent"
+                    android:elevation="8dp"
+                    android:gravity="center_vertical"
+                    android:text="VPN"
+                    android:textColor="@color/dark_30"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            <Button
+                    android:id="@+id/editVPN"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="EDIT"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:background="@android:color/transparent"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+        <ListView
+                android:id="@+id/vpn"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:layout_marginBottom="10dp"
+                android:dividerHeight="0dp"
+                android:divider="@null"
+                app:layout_constraintTop_toTopOf="parent"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+            android:id="@+id/dnsLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:background="@drawable/info_panel_rounded_corner"
+            android:gravity="start"
+            android:paddingLeft="20dp"
+            android:orientation="vertical"
+            app:layout_constraintTop_toBottomOf="@id/vpnLayout"
+            android:elevation="8dp">
+        <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
                     android:id="@+id/dnsLabel"
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
                     android:background="@android:color/transparent"
                     android:elevation="8dp"
                     android:gravity="center_vertical"
-                    android:text="DNS:"
+                    android:text="DNS"
                     android:textColor="@color/dark_30"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -158,6 +208,28 @@
                 app:layout_constraintTop_toTopOf="parent"/>
 
     </LinearLayout>
+    <TextView
+            android:id="@+id/status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            app:layout_constraintBottom_toBottomOf="@+id/onOff"
+            app:layout_constraintTop_toTopOf="@+id/onOff"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:text="OFF"/>
+
+    <ImageButton
+            android:id="@+id/onOff"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_centerInParent="true"
+            android:background="@drawable/circle_button_off"
+            android:textColor="@color/white"
+            app:layout_constraintBottom_toTopOf="@+id/about"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:contentDescription="This button starts the mesh" />
     <Button
             android:id="@+id/about"
             android:layout_width="match_parent"
@@ -166,4 +238,5 @@
             app:layout_constraintBottom_toBottomOf="parent"
             android:text=""
             android:textSize="10sp" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

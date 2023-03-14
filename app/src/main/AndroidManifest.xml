@@ -2,11 +2,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools">
 
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.CHANGE_WIFI_MULTICAST_STATE"/>
+    <uses-permission android:name="android.permission.CHANGE_WIFI_MULTICAST_STATE" />
 
     <application
             android:name="org.mesh.app.crispa.MeshApplication"
@@ -15,50 +15,59 @@
             android:label="@string/app_name"
             android:roundIcon="@mipmap/riv_launcher_round"
             android:supportsRtl="true"
-            tools:ignore="GoogleAppIndexingWarning"
-            android:usesCleartextTraffic="true">
+            android:usesCleartextTraffic="true"
+            tools:ignore="GoogleAppIndexingWarning">
+        <activity
+                android:name="org.mesh.app.crispa.VpnActivity"
+                android:label="VPN"
+                android:parentActivityName="org.mesh.app.crispa.MainActivity"
+                android:screenOrientation="portrait"
+                android:theme="@style/AppTheme.NoActionBar"/>
         <activity
                 android:name="org.mesh.app.crispa.AboutActivity"
-                android:parentActivityName="org.mesh.app.crispa.MainActivity"
                 android:label="@string/title_activity_about"
-                android:theme="@style/AppTheme.NoActionBar"
-                android:screenOrientation="portrait"/>
+                android:parentActivityName="org.mesh.app.crispa.MainActivity"
+                android:screenOrientation="portrait"
+                android:theme="@style/AppTheme.NoActionBar" />
         <activity
                 android:name="org.mesh.app.crispa.PeerListActivity"
-                android:parentActivityName="org.mesh.app.crispa.MainActivity"
                 android:label="@string/title_activity_peer_list"
-                android:theme="@style/AppTheme.NoActionBar"
-                android:screenOrientation="portrait"/>
+                android:parentActivityName="org.mesh.app.crispa.MainActivity"
+                android:screenOrientation="portrait"
+                android:theme="@style/AppTheme.NoActionBar" />
         <activity
                 android:name="org.mesh.app.crispa.DNSListActivity"
-                android:parentActivityName="org.mesh.app.crispa.MainActivity"
                 android:label="@string/title_activity_dns_list"
-                android:theme="@style/AppTheme.NoActionBar"
-                android:screenOrientation="portrait"/>
+                android:parentActivityName="org.mesh.app.crispa.MainActivity"
+                android:screenOrientation="portrait"
+                android:theme="@style/AppTheme.NoActionBar" />
         <activity
                 android:name="org.mesh.app.crispa.CopyLocalNodeInfoActivity"
-                android:parentActivityName="org.mesh.app.crispa.MainActivity"
                 android:label="@string/title_activity_copy_local_node_info"
-                android:theme="@style/AppTheme.NoActionBar"
-                android:screenOrientation="portrait"/>
+                android:parentActivityName="org.mesh.app.crispa.MainActivity"
+                android:screenOrientation="portrait"
+                android:theme="@style/AppTheme.NoActionBar" />
+
         <service
                 android:name="org.mesh.app.crispa.MeshTunService"
-                android:stopWithTask="true"
                 android:enabled="true"
                 android:exported="true"
-                android:permission="android.permission.BIND_VPN_SERVICE">
+                android:permission="android.permission.BIND_VPN_SERVICE"
+                android:stopWithTask="true">
             <intent-filter>
                 <action android:name="android.net.VpnService" />
             </intent-filter>
         </service>
 
-        <activity android:name="org.mesh.app.crispa.MainActivity"
+        <activity
+                android:name="org.mesh.app.crispa.MainActivity"
+                android:exported="true"
                 android:label="@string/app_name"
-                android:theme="@style/AppTheme.NoActionBar"
                 android:screenOrientation="portrait"
-                android:exported="true">
+                android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

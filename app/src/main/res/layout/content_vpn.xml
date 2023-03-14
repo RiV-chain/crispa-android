@@ -1,0 +1,180 @@
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        android:background="@color/grey">
+
+        <LinearLayout
+                android:id="@+id/enableLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="20dp"
+                android:background="@drawable/info_panel_rounded_corner"
+                android:gravity="start"
+                android:paddingLeft="20dp"
+                android:orientation="vertical"
+                app:layout_constraintTop_toTopOf="parent"
+                android:animateLayoutChanges="true"
+                android:elevation="8dp">
+            <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                        android:id="@+id/enable"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:background="@android:color/transparent"
+                        android:elevation="8dp"
+                        android:gravity="center_vertical"
+                        android:text="Enable VPN"
+                        android:textColor="@color/dark_30"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+                <Switch
+                        android:id="@+id/enable_switch"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="On/Off"
+                        android:textColor="@color/white"
+                        android:checked="false"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginBottom="8dp"
+                        android:layout_alignParentStart="true"
+                        android:layout_marginStart="24dp"
+                        android:layout_alignParentLeft="true"
+                        android:layout_marginLeft="24dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+                android:id="@+id/ipv4Layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="20dp"
+                android:background="@drawable/info_panel_rounded_corner"
+                android:gravity="start"
+                android:paddingLeft="20dp"
+                android:orientation="vertical"
+                app:layout_constraintTop_toBottomOf="@id/enableLayout"
+                android:elevation="8dp">
+            <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                <EditText
+                        android:id="@+id/ipv4_edittext"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="0.0.0.0/0"
+                        android:textColor="@color/white"
+                        android:textColorHint="@color/dark_30"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        android:layout_marginTop="8dp"
+                        />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
+
+    <LinearLayout
+            android:id="@+id/ipv4PublicKey"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:background="@drawable/info_panel_rounded_corner"
+            android:gravity="start"
+            android:paddingLeft="20dp"
+            android:orientation="vertical"
+            app:layout_constraintTop_toBottomOf="@id/ipv4Layout"
+            android:elevation="8dp">
+        <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="parent">
+
+            <EditText
+                    android:id="@+id/ipv4_publickey_edittext"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+
+                    android:hint="Public key"
+                    android:inputType="text|textCapCharacters"
+                    android:maxLength="64"
+                    android:textColor="@color/white"
+                    android:textColorHint="@color/dark_30"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
+    <LinearLayout
+            android:id="@+id/ipv6Layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:background="@drawable/info_panel_rounded_corner"
+            android:gravity="start"
+            android:paddingLeft="20dp"
+            android:orientation="vertical"
+            app:layout_constraintTop_toBottomOf="@id/ipv4PublicKey"
+            android:elevation="8dp">
+        <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="parent">
+
+
+            <EditText
+                    android:id="@+id/ipv6_edittext"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="::/0"
+                    android:textColor="@color/white"
+                    android:textColorHint="@color/dark_30"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:layout_marginTop="8dp"
+                    />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
+
+    <LinearLayout
+            android:id="@+id/ipv6PublicKey"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:background="@drawable/info_panel_rounded_corner"
+            android:gravity="start"
+            android:paddingLeft="20dp"
+            android:orientation="vertical"
+            app:layout_constraintTop_toBottomOf="@id/ipv6Layout"
+            android:elevation="8dp">
+        <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="parent">
+
+            <EditText
+                    android:id="@+id/ipv6_publickey_edittext"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+
+                    android:hint="Public key"
+                    android:inputType="text|textCapCharacters"
+                    android:maxLength="64"
+                    android:textColor="@color/white"
+                    android:textColorHint="@color/dark_30"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

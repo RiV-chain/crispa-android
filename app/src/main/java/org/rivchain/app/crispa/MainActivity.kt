@@ -3,6 +3,7 @@ package org.mesh.app.crispa
 import android.app.Activity
 import android.app.ActivityManager
 import android.content.*
+import android.graphics.Color
 import android.net.VpnService
 import android.net.wifi.WifiManager
 import android.os.Build
@@ -10,6 +11,8 @@ import android.os.Bundle
 import android.util.Log
 import android.view.Gravity
 import android.view.View
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SwitchCompat
@@ -32,11 +35,16 @@ import java.net.URL
 import java.nio.charset.Charset
 import kotlin.concurrent.thread
 
-
 class MainActivity : AppCompatActivity() {
 
     companion object {
         const val STATIC_IP = "STATIC_IP_FLAG"
+        const val NETWORK_DOMAIN_PREFIX = "NETWORK_DOMAIN_PREFIX"
+        const val TUNNEL_ROUTING_ENABLE = "TUNNEL_ROUTING_ENABLE"
+        const val IPV4_REMOTE_SUBNET = "IPV4_REMOTE_SUBNET"
+        const val IPV6_REMOTE_SUBNET = "IPV6_REMOTE_SUBNET"
+        const val IPV4_PUBLIC_KEY = "IPV4_PUBLIC_KEY"
+        const val IPV6_PUBLIC_KEY = "IPV6_PUBLIC_KEY"
         const val privateKey = "privateKey"
         const val publicKey = "publicKey"
         const val COMMAND = "COMMAND"
@@ -50,6 +58,7 @@ class MainActivity : AppCompatActivity() {
         const val IPv6: String = "IPv6"
         const val PEER_LIST_CODE = 1000
         const val DNS_LIST_CODE = 2000
+        const val VPN_LIST_CODE = 3000
         const val PEER_LIST = "PEERS_LIST"
         const val DNS_LIST = "DNS_LIST"
         const val CURRENT_PEERS = "CURRENT_PEERS_v1.2.1"
@@ -72,6 +81,8 @@ class MainActivity : AppCompatActivity() {
     private var currentPeers = setOf<PeerInfo>()
     private var currentDNS = setOf<DNSInfo>()
     private var networkStateReceiver: BroadcastReceiver? = null
+    private lateinit var switchOn: ImageButton
+    private lateinit var status: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -79,22 +90,6 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(findViewById(R.id.toolbar))
         isStarted = isYggServiceRunning(this)
         wifiManager = applicationContext.getSystemService(WIFI_SERVICE) as WifiManager
-        val switchOn = findViewById<SwitchCompat>(R.id.switchOn)
-        switchOn.isChecked = isStarted
-
-        switchOn.setOnCheckedChangeListener { _, isChecked ->
-            if(isCancelled){
-                switchOn.isChecked = false
-                isCancelled = false
-                return@setOnCheckedChangeListener
-            }
-            if (isChecked) {
-                startVpn()
-            } else {
-                stopVpn()
-            }
-            //setWiFiMulticastLock(isChecked)
-        }
         //save to shared preferences
         val preferences =
             PreferenceManager.getDefaultSharedPreferences(this.baseContext)
@@ -156,6 +151,11 @@ class MainActivity : AppCompatActivity() {
             intent.putStringArrayListExtra(DNS_LIST, serializeDNSInfoSet2StringList(currentDNS))
             startActivityForResult(intent, DNS_LIST_CODE)
         }
+        val editVPNButton = findViewById<Button>(R.id.editVPN)
+        editVPNButton.setOnClickListener {
+            val intent = Intent(this@MainActivity, VpnActivity::class.java)
+            startActivityForResult(intent, VPN_LIST_CODE)
+        }
         val nodeInfoButton = findViewById<Button>(R.id.nodeInfo)
         nodeInfoButton.setOnClickListener {
             if(isStarted) {
@@ -169,50 +169,6 @@ class MainActivity : AppCompatActivity() {
             ipLayout.visibility = View.VISIBLE
             findViewById<TextView>(R.id.ip).text = address
         }
-        /*
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            val connectivityManager = this.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-            connectivityManager?.let {
-                it.registerDefaultNetworkCallback(object : ConnectivityManager.NetworkCallback() {
-                    override fun onAvailable(network: Network) {
-                        if(isStarted) {
-                            stopVpn()
-                            Thread.sleep(1000)
-                            startVpn()
-                        }
-                    }
-                    override fun onLost(network: Network?) {
-                        if(isStarted) {
-                            stopVpn()
-                            Thread.sleep(1000)
-                            startVpn()
-                        }
-                    }
-                })
-            }
-        } else {
-            networkStateReceiver = object : BroadcastReceiver() {
-                override fun onReceive(context: Context, intent: Intent) {
-                    val status: Int = NetworkUtils.getConnectivityStatusString(context)
-                    Log.i(TAG, "Network state has been changed")
-                    if ("android.net.conn.CONNECTIVITY_CHANGE" == intent.action) {
-                        if (status == NetworkUtils.NETWORK_STATUS_NOT_CONNECTED) {
-                            if(isStarted) {
-                                stopVpn()
-                                Thread.sleep(1000)
-                                startVpn()
-                            }
-                        } else {
-                            if(isStarted) {
-                                stopVpn()
-                                Thread.sleep(1000)
-                                startVpn()
-                            }
-                        }
-                    }
-                }
-            }
-        }*/
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
             val sourceDir: String = this.applicationInfo.sourceDir
             val dexFile = DexFile(sourceDir)
@@ -220,10 +176,30 @@ class MainActivity : AppCompatActivity() {
             val c: Class<*> = dexFile.loadClass("dummy/Dummy", cl)
         }
         val versionName = findViewById<Button>(R.id.about)
-        versionName.text = """version:${BuildConfig.VERSION_NAME} build:${BuildConfig.VERSION_CODE} core:${Mobile.getVersion()}"""
+        """version:${BuildConfig.VERSION_NAME} build:${BuildConfig.VERSION_CODE} core:${Mobile.getVersion()}""".also { versionName.text = it }
         versionName.setOnClickListener {
             val intent = Intent(this@MainActivity, AboutActivity::class.java)
             startActivity(intent)
+        }
+
+        switchOn = findViewById(R.id.onOff)
+        switchOn.setOnClickListener {
+            if(isCancelled){
+                isCancelled = false
+                return@setOnClickListener
+            }
+            switchOn.background = resources.getDrawable(R.drawable.circle_button_inprogress)
+            val animation = AnimationUtils.loadAnimation(this, R.anim.rotate_animation)
+            animation.repeatCount = Animation.INFINITE
+            animation.repeatMode = Animation.RESTART
+            switchOn.startAnimation(animation)
+            status = findViewById(R.id.status)
+            status.text = "Connecting..."
+            if (!isStarted) {
+                startVpn()
+            } else {
+                stopVpn()
+            }
         }
     }
 
@@ -388,11 +364,29 @@ class MainActivity : AppCompatActivity() {
                 ipLayout.visibility = View.VISIBLE
                 address = data!!.getStringExtra(IPv6)
                 findViewById<TextView>(R.id.ip).text = address
+                Thread {
+                    Thread.sleep(500)
+                    switchOn.clearAnimation()
+                    runOnUiThread {
+                        switchOn.background = resources.getDrawable(R.drawable.circle_button_on)
+                        status.text = "ON"
+                        status.setTextColor(Color.GREEN)
+                    }
+                }.start()
             }
             STATUS_STOP -> {
                 isStarted = false
                 val ipLayout = findViewById<LinearLayout>(R.id.ipLayout)
                 ipLayout.visibility = View.GONE
+                Thread {
+                    Thread.sleep(500)
+                    switchOn.clearAnimation()
+                    runOnUiThread {
+                        switchOn.background = resources.getDrawable(R.drawable.circle_button_off)
+                        status.text = "OFF"
+                        status.setTextColor(Color.WHITE)
+                    }
+                }.start()
             }
             else -> { // Note the block
 

@@ -37,21 +37,9 @@
                     android:layout_margin="10dp"
                     android:theme="@style/SwitchTheme"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/switchOn"
-                    app:layout_constraintTop_toTopOf="parent"
-                    android:text="Static IP"
-                    android:textColor="@color/white"/>
-
-            <androidx.appcompat.widget.SwitchCompat
-                    android:id="@+id/switchOn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:theme="@style/SwitchTheme"
-                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    android:text="RiV me!"
+                    android:text="Static IP"
                     android:textColor="@color/white"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
