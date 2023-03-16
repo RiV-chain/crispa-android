@@ -1,4 +1,4 @@
-package org.mesh.app.crispa
+package org.rivchain.app.crispa
 
 import android.app.Activity
 import android.app.ActivityManager
@@ -19,17 +19,17 @@ import androidx.appcompat.widget.SwitchCompat
 import androidx.preference.PreferenceManager
 import dalvik.system.DexFile
 import mobile.Mobile
-import org.mesh.app.crispa.models.DNSInfo
-import org.mesh.app.crispa.models.PeerInfo
-import org.mesh.app.crispa.models.config.DNSInfoListAdapter
-import org.mesh.app.crispa.models.config.PeerInfoListAdapter
-import org.mesh.app.crispa.models.config.Utils.Companion.deserializePeerString2PeerInfoSet
-import org.mesh.app.crispa.models.config.Utils.Companion.deserializeStringList2DNSInfoSet
-import org.mesh.app.crispa.models.config.Utils.Companion.deserializeStringList2PeerInfoSet
-import org.mesh.app.crispa.models.config.Utils.Companion.deserializeStringSet2DNSInfoSet
-import org.mesh.app.crispa.models.config.Utils.Companion.deserializeStringSet2PeerInfoSet
-import org.mesh.app.crispa.models.config.Utils.Companion.serializeDNSInfoSet2StringList
-import org.mesh.app.crispa.models.config.Utils.Companion.serializePeerInfoSet2StringList
+import org.rivchain.app.crispa.models.DNSInfo
+import org.rivchain.app.crispa.models.PeerInfo
+import org.rivchain.app.crispa.models.config.DNSInfoListAdapter
+import org.rivchain.app.crispa.models.config.PeerInfoListAdapter
+import org.rivchain.app.crispa.models.config.Utils.Companion.deserializePeerString2PeerInfoSet
+import org.rivchain.app.crispa.models.config.Utils.Companion.deserializeStringList2DNSInfoSet
+import org.rivchain.app.crispa.models.config.Utils.Companion.deserializeStringList2PeerInfoSet
+import org.rivchain.app.crispa.models.config.Utils.Companion.deserializeStringSet2DNSInfoSet
+import org.rivchain.app.crispa.models.config.Utils.Companion.deserializeStringSet2PeerInfoSet
+import org.rivchain.app.crispa.models.config.Utils.Companion.serializeDNSInfoSet2StringList
+import org.rivchain.app.crispa.models.config.Utils.Companion.serializePeerInfoSet2StringList
 import java.io.ByteArrayOutputStream
 import java.net.URL
 import java.nio.charset.Charset

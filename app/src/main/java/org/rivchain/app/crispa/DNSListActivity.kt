@@ -1,4 +1,4 @@
-package org.mesh.app.crispa
+package org.rivchain.app.crispa
 
 import android.app.Activity
 import android.content.Intent
@@ -10,11 +10,11 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.hbb20.CountryCodePicker
-import org.mesh.app.crispa.models.DNSInfo
-import org.mesh.app.crispa.models.config.SelectDNSInfoListAdapter
-import org.mesh.app.crispa.models.config.Utils.Companion.deserializeStringList2DNSInfoSet
-import org.mesh.app.crispa.models.config.Utils.Companion.ping
-import org.mesh.app.crispa.models.config.Utils.Companion.serializeDNSInfoSet2StringList
+import org.rivchain.app.crispa.models.DNSInfo
+import org.rivchain.app.crispa.models.config.SelectDNSInfoListAdapter
+import org.rivchain.app.crispa.models.config.Utils.Companion.deserializeStringList2DNSInfoSet
+import org.rivchain.app.crispa.models.config.Utils.Companion.ping
+import org.rivchain.app.crispa.models.config.Utils.Companion.serializeDNSInfoSet2StringList
 import kotlinx.coroutines.*
 import java.net.InetAddress
 import java.net.UnknownHostException

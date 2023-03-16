@@ -1,4 +1,4 @@
-package org.mesh.app.crispa.models.config
+package org.rivchain.app.crispa.models.config
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -7,8 +7,8 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.ImageView
 import android.widget.TextView
-import org.mesh.app.crispa.R
-import org.mesh.app.crispa.models.DNSInfo
+import org.rivchain.app.crispa.R
+import org.rivchain.app.crispa.models.DNSInfo
 
 
 class DNSInfoListAdapter(

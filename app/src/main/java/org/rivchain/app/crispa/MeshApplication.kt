@@ -1,4 +1,4 @@
-package org.mesh.app.crispa
+package org.rivchain.app.crispa
 
 import android.content.Context
 import androidx.multidex.MultiDexApplication

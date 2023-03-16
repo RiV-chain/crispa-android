@@ -12,13 +12,13 @@ keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
 android {
     compileSdkVersion 33
     defaultConfig {
-        applicationId "io.github.chronosx88.mesh"
+        applicationId "org.rivchain.app.crispa"
         minSdkVersion 16
         //noinspection ExpiredTargetSdkVersion required for peers multicast < API 30
         targetSdkVersion 29
 
-        versionCode 77
-        versionName "0.5.1.1"
+        versionCode 78
+        versionName "0.5.1.2"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         setProperty("archivesBaseName", project.getParent().name+"-"+versionName)
 
@@ -62,7 +62,7 @@ android {
         abortOnError false
         checkReleaseBuilds false
     }
-    namespace 'org.mesh.app.crispa'
+    namespace 'org.rivchain.app.crispa'
 
 }
 

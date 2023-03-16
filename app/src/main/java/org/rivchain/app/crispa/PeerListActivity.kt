@@ -1,4 +1,4 @@
-package org.mesh.app.crispa
+package org.rivchain.app.crispa
 
 import android.app.Activity
 import android.content.Intent
@@ -23,13 +23,13 @@ import com.vincentbrison.openlibraries.android.dualcache.Builder
 import com.vincentbrison.openlibraries.android.dualcache.JsonSerializer
 import com.vincentbrison.openlibraries.android.dualcache.SizeOf
 import kotlinx.coroutines.*
-import org.mesh.app.crispa.models.PeerInfo
-import org.mesh.app.crispa.models.Status
-import org.mesh.app.crispa.models.config.DropDownAdapter
-import org.mesh.app.crispa.models.config.SelectPeerInfoListAdapter
-import org.mesh.app.crispa.models.config.Utils.Companion.deserializeStringList2PeerInfoSet
-import org.mesh.app.crispa.models.config.Utils.Companion.ping
-import org.mesh.app.crispa.models.config.Utils.Companion.serializePeerInfoSet2StringList
+import org.rivchain.app.crispa.models.PeerInfo
+import org.rivchain.app.crispa.models.Status
+import org.rivchain.app.crispa.models.config.DropDownAdapter
+import org.rivchain.app.crispa.models.config.SelectPeerInfoListAdapter
+import org.rivchain.app.crispa.models.config.Utils.Companion.deserializeStringList2PeerInfoSet
+import org.rivchain.app.crispa.models.config.Utils.Companion.ping
+import org.rivchain.app.crispa.models.config.Utils.Companion.serializePeerInfoSet2StringList
 import java.io.ByteArrayOutputStream
 import java.io.FileNotFoundException
 import java.lang.reflect.Type
@@ -39,7 +39,6 @@ import java.net.URL
 import java.net.UnknownHostException
 import java.nio.charset.Charset
 import java.util.*
-
 
 class PeerListActivity : AppCompatActivity() {
 

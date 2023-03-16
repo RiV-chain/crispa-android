@@ -1,10 +1,9 @@
-package org.mesh.app.crispa
+package org.rivchain.app.crispa
 
 import android.os.Bundle
 import android.widget.EditText
 import android.widget.Switch
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.SwitchCompat
 import androidx.preference.PreferenceManager
 
 class VpnActivity: AppCompatActivity() {
@@ -43,8 +42,8 @@ class VpnActivity: AppCompatActivity() {
         }
     }
 
-    override fun onSupportNavigateUp(): Boolean {
-        onBackPressed()
+    override fun onBackPressed() {
+        super.onBackPressed()
         //save config
         val preferences =
             PreferenceManager.getDefaultSharedPreferences(this.baseContext)
@@ -55,6 +54,5 @@ class VpnActivity: AppCompatActivity() {
             .putString(MainActivity.IPV6_REMOTE_SUBNET, ipv6_remote_subnet.text.toString())
             .putString(MainActivity.IPV6_PUBLIC_KEY, ipv6_public_key.text.toString())
             .apply()
-        return true
     }
 }

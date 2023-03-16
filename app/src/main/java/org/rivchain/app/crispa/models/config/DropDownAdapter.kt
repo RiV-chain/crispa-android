@@ -1,4 +1,4 @@
-package org.mesh.app.crispa.models.config
+package org.rivchain.app.crispa.models.config
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -11,8 +11,7 @@ import android.widget.AdapterView.OnItemClickListener
 import android.widget.ArrayAdapter
 import android.widget.PopupWindow
 import android.widget.TextView
-import org.mesh.app.crispa.R
-
+import org.rivchain.app.crispa.R
 
 class DropDownAdapter(
     context: Context,
