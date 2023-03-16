@@ -9,7 +9,7 @@
     <uses-permission android:name="android.permission.CHANGE_WIFI_MULTICAST_STATE" />
 
     <application
-            android:name="org.rivchain.app.crispa.MeshApplication"
+            android:name=".MeshApplication"
             android:allowBackup="true"
             android:icon="@mipmap/riv_launcher"
             android:label="@string/app_name"
@@ -18,38 +18,38 @@
             android:usesCleartextTraffic="true"
             tools:ignore="GoogleAppIndexingWarning">
         <activity
-                android:name="org.rivchain.app.crispa.VpnActivity"
+                android:name=".VpnActivity"
                 android:label="VPN"
-                android:parentActivityName="org.mesh.app.crispa.MainActivity"
+                android:parentActivityName=".MainActivity"
                 android:screenOrientation="portrait"
                 android:theme="@style/AppTheme.NoActionBar"/>
         <activity
-                android:name="org.rivchain.app.crispa.AboutActivity"
+                android:name=".AboutActivity"
                 android:label="@string/title_activity_about"
-                android:parentActivityName="org.mesh.app.crispa.MainActivity"
+                android:parentActivityName=".MainActivity"
                 android:screenOrientation="portrait"
                 android:theme="@style/AppTheme.NoActionBar" />
         <activity
-                android:name="org.rivchain.app.crispa.PeerListActivity"
+                android:name=".PeerListActivity"
                 android:label="@string/title_activity_peer_list"
-                android:parentActivityName="org.mesh.app.crispa.MainActivity"
+                android:parentActivityName=".MainActivity"
                 android:screenOrientation="portrait"
                 android:theme="@style/AppTheme.NoActionBar" />
         <activity
-                android:name="org.rivchain.app.crispa.DNSListActivity"
+                android:name=".DNSListActivity"
                 android:label="@string/title_activity_dns_list"
-                android:parentActivityName="org.mesh.app.crispa.MainActivity"
+                android:parentActivityName=".MainActivity"
                 android:screenOrientation="portrait"
                 android:theme="@style/AppTheme.NoActionBar" />
         <activity
-                android:name="org.rivchain.app.crispa.CopyLocalNodeInfoActivity"
+                android:name=".CopyLocalNodeInfoActivity"
                 android:label="@string/title_activity_copy_local_node_info"
-                android:parentActivityName="org.mesh.app.crispa.MainActivity"
+                android:parentActivityName=".MainActivity"
                 android:screenOrientation="portrait"
                 android:theme="@style/AppTheme.NoActionBar" />
 
         <service
-                android:name="org.rivchain.app.crispa.MeshTunService"
+                android:name=".MeshTunService"
                 android:enabled="true"
                 android:exported="true"
                 android:permission="android.permission.BIND_VPN_SERVICE"
@@ -60,7 +60,7 @@
         </service>
 
         <activity
-                android:name="org.mesh.app.crispa.MainActivity"
+                android:name=".MainActivity"
                 android:exported="true"
                 android:label="@string/app_name"
                 android:screenOrientation="portrait"
