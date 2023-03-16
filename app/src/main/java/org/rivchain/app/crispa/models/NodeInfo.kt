@@ -1,4 +1,4 @@
-package org.mesh.app.crispa.models
+package org.rivchain.app.crispa.models
 
 class NodeInfo {
 

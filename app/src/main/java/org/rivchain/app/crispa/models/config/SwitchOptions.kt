@@ -1,4 +1,4 @@
-package org.mesh.app.crispa.models.config
+package org.rivchain.app.crispa.models.config
 
 import com.google.gson.annotations.SerializedName
 

@@ -1,10 +1,10 @@
-package org.mesh.app.crispa.models.config
+package org.rivchain.app.crispa.models.config
 
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import org.acra.ACRA
-import org.mesh.app.crispa.models.DNSInfo
-import org.mesh.app.crispa.models.PeerInfo
+import org.rivchain.app.crispa.models.DNSInfo
+import org.rivchain.app.crispa.models.PeerInfo
 import java.lang.reflect.Type
 import java.net.*
 

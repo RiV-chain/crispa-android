@@ -1,4 +1,4 @@
-package org.mesh.app.crispa
+package org.rivchain.app.crispa
 
 import android.app.*
 import android.content.Context
@@ -15,11 +15,11 @@ import androidx.preference.PreferenceManager
 import com.google.gson.Gson
 import mobile.Mesh
 import mobile.Mobile
-import org.mesh.app.crispa.models.DNSInfo
-import org.mesh.app.crispa.models.PeerInfo
-import org.mesh.app.crispa.models.config.Utils.Companion.convertPeerInfoSet2PeerIdSet
-import org.mesh.app.crispa.models.config.Utils.Companion.deserializeStringList2DNSInfoSet
-import org.mesh.app.crispa.models.config.Utils.Companion.deserializeStringList2PeerInfoSet
+import org.rivchain.app.crispa.models.DNSInfo
+import org.rivchain.app.crispa.models.PeerInfo
+import org.rivchain.app.crispa.models.config.Utils.Companion.convertPeerInfoSet2PeerIdSet
+import org.rivchain.app.crispa.models.config.Utils.Companion.deserializeStringList2DNSInfoSet
+import org.rivchain.app.crispa.models.config.Utils.Companion.deserializeStringList2PeerInfoSet
 import java.io.*
 import java.net.Inet6Address
 import java.net.NetworkInterface

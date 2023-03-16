@@ -1,4 +1,4 @@
-package org.mesh.app.crispa
+package org.rivchain.app.crispa
 
 import android.os.Bundle
 import android.text.Html
